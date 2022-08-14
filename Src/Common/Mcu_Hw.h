@@ -1,87 +1,100 @@
-/**********************************************************************************************************************
+/*
+ * Mcu_Hw.h
+ *
+ *  Created on: Aug 14, 2022
+ *      Author: Eng.Ahmed Youssef
+ */
 
+/**********************************************************************************************************************
  *  FILE DESCRIPTION
  *  -------------------------------------------------------------------------------------------------------------------
- *         File:  Mcu_Hw.h
- *       Module:  Mcu_Hw
+ *         File:  <Write File Name>
+ *       Module:  -
  *
- *  Description:  header file for Registers definition    
- *  
+ *  Description:  <Write File DESCRIPTION here>
+ *
  *********************************************************************************************************************/
-#ifndef MCU_HW_H
-#define MCU_HW_H
+
+#ifndef SRC_COMMON_MCU_HW_H_
+#define SRC_COMMON_MCU_HW_H_
 
 /**********************************************************************************************************************
  * INCLUDES
  *********************************************************************************************************************/
-#include "Std_Types.h"
 
 /**********************************************************************************************************************
  *  GLOBAL DATA TYPES AND STRUCTURES
  *********************************************************************************************************************/
-typedef struct 
+typedef struct
 {
-    uint32 VECACT   :8;
-    uint32          :3;
-    uint32 RETBASE  :1;
-    uint32 VECPEND  :8;
-    uint32          :2;
-    uint32 ISRPEND  :1;
-    uint32 ISRPRE   :1;
-    uint32          :1;
-    uint32 PENDSTCLR:1;
-    uint32 PENDSTSET:1;
-    uint32 UNPENDSV :1;
-    uint32 PENDSV   :1;
-    uint32          :2;
-    uint32 NMISET   :1; 
+	uint32 VECACT		:8;
+	uint32				:3;
+	uint32 RETBASE		:1;
+	uint32 VECPEND		:8;
+	uint32				:2;
+	uint32 ISRPEND		:1;
+	uint32 ISRPRE		:1;
+	uint32				:1;
+	uint32 PENDSTCLR	:1;
+	uint32 PENDSTSET	:1;
+	uint32 UNPENDSV		:1;
+	uint32 PENDSV		:1;
+	uint32 				:2;
+	uint32 NMISET		:1;
 }INTCTRL_BF;
 
-typedef struct 
+typedef struct
 {
-    uint32 VECTRESET   :1;
-    uint32 VECTCLRACT  :1;
-    uint32 SYSRESREQ   :1;
-    uint32   					 :5;
-    uint32         		 :2;
-    uint32 PRIGROUP 	 :3;
-    uint32         		 :4;
-    uint32 ENDIANESS   :1;
-    uint32 VECTKEY		:16;
+	uint32 VECTRESET	:1;
+	uint32 VECTCLRACT	:1;
+	uint32 SYSRESREQ	:1;
+	uint32				:5;
+	uint32				:2;
+	uint32 PRIGROUP		:3;
+	uint32				:4;
+	uint32 ENDIANESS	:1;
+	uint32 VECTKEY		:16;
 }APINT_BF;
 
-typedef union 
+
+typedef union
 {
-    uint32 R;
-    INTCTRL_BF B;
+	uint32		R;
+	APINT_BF	B;
+}APINT_Tag;
+
+typedef union
+{
+	uint32		R;
+	INTCTRL_BF	B;
 }INTCTRL_Tag;
 
-typedef union 
-{
-    uint32 R;
-    APINT_BF B;
-}APINT_Tag;
 
 /**********************************************************************************************************************
  *  GLOBAL CONSTANT MACROS
  *********************************************************************************************************************/
-#define CORTEXM4_PERI_BASE_ADDRESS             0xE000E000
-#define APINT_OFFSET                           0xD0C
-#define INTCTRL_OFFSET                         0xD04
+#define CORTEXM4_Base		0xE000E000
 
-#define APINT                                  (*((volatile APINT_Tag*)(CORTEXM4_PERI_BASE_ADDRESS+APINT_OFFSET)))
-#define INTCTRL                                (*((volatile INTCTRL_Tag*)(CORTEXM4_PERI_BASE_ADDRESS+INTCTRL_OFFSET)))
+#define APINT				*((volatile APINT_Tag 	*)(CORTEXM4_Base+0xD0C))
+#define INTCTRL				*((volatile INTCTRL_Tag *)(CORTEXM4_Base+0xD04))
+
+/**********************************************************************************************************************
+ *  GLOBAL FUNCTION MACROS
+ *********************************************************************************************************************/
 
 
 /**********************************************************************************************************************
  *  GLOBAL DATA PROTOTYPES
  *********************************************************************************************************************/
 
- 
-
- 
-#endif  /* MCU_HW_H */
 
 /**********************************************************************************************************************
- *  END OF FILE: Mcu_Hw.h
+ *  GLOBAL FUNCTION PROTOTYPES
+ *********************************************************************************************************************/
+
+
+#endif /* SRC_COMMON_MCU_HW_H_ */
+
+/**********************************************************************************************************************
+ *  END OF FILE: Std_Types.h
  *********************************************************************************************************************/
