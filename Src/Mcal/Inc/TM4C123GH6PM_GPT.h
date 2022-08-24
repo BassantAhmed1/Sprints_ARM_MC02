@@ -108,6 +108,28 @@ typedef struct
 
 
 }GPT_ConfigType;
+
+
+
+//-----------------------------
+//Macros Configuration References
+//-----------------------------
+
+
+//@ref GPT_Freq_Define
+
+#define GPT_Freq_16MHZ		0xF42400
+#define GPT_Freq_8MHZ		0x7A1200
+#define GPT_Freq_4MHZ		0x3D0900
+#define GPT_Freq_2MHZ		0x1E8480
+#define GPT_Freq_1MHZ		0xF4240
+
+//------------------------------------------------------------------------------------------------------------------
+
+#define Count_Dir_down		0
+#define Count_Dir_up		1
+
+
 /**********************************************************************************************************************
  *  GLOBAL DATA PROTOTYPES
  *********************************************************************************************************************/
@@ -119,7 +141,7 @@ typedef struct
 void GPT_init(GPT_ConfigType* ConfigPtr);
 void GPT_DisableNotification (GPT_ChannelType Channel);
 void GPT_EnableNotification (GPT_ChannelType Channel);
-void GPT_StartTimer ();
+void GPT_StartTimer (uint8 Seconds_ms);
 void GPT_StopTimer ();
 void GPT_SetMode ();
 
