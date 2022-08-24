@@ -36,61 +36,64 @@
  *********************************************************************************************************************/
 
 
-/**********************************************************************************************************************
- *  GLOBAL DATA TYPES AND STRUCTURES
- *********************************************************************************************************************/
-typedef struct
-{
-	uint8 PortPinNumber;			//specifies the GPIO pin Number to be configured.
-									//this parameter must be set based on a value @ref Port_PinNum_define
-
-	uint8 PortPinMode ;			//specifies the GPIO pin Mode to be configured.
-									//this parameter must be set based on a value @ref Port_PinMode_define
-
-	uint8 PortPinLevelValue ;		//specifies the GPIO pin Level to be configured.
-									//this parameter must be set based on a value @ref Port_PinLevel_define
-
-	uint8 PortPinDirection ;		//specifies the GPIO pin Direction to be configured.
-									//this parameter must be set based on a value @ref Port_PinDir_define
-
-	uint8 PortPinInternalAttach ;	//specifies the GPIO pin internal pull up or pull down attach to be configured.
-									//this parameter must be set based on a value @ref Port_PinAttach_define
-
-	uint8 PortPinOutputCurrent ;	//specifies the GPIO pin output current to be configured.
-									//this parameter must be set based on a value @ref Port_PinOutCurrent_define
-
-}Port_ConfigType;
-
-typedef enum
-{
-	Low,
-	High
-}Dio_LevelType;
-
 //-----------------------------
 //Macros Configuration References
 //-----------------------------
 
-//@ref Port_PinNum_define
-//#define 	Port_PinNum_0				0x01			//(1<<0)
-//#define 	Port_PinNum_1				0x02			//(1<<1)
-//#define 	Port_PinNum_2				0x04			//(1<<2)
-//#define 	Port_PinNum_3				0x08			//(1<<3)
-//#define 	Port_PinNum_4				0x10			//(1<<4)
-//#define 	Port_PinNum_5				0x20			//(1<<5)
-//#define 	Port_PinNum_6				0x40			//(1<<6)
-//#define 	Port_PinNum_7				0x80			//(1<<7)
+//@ref Port_PinType_define
 typedef enum
 {
-	Pin0,
-	Pin1,
-	Pin2,
-	Pin3,
-	Pin4,
-	Pin5,
-	Pin6,
-	Pin7
+	Dio_PortA_PA0,
+	Dio_PortA_PA1,
+	Dio_PortA_PA2,
+	Dio_PortA_PA3,
+	Dio_PortA_PA4,
+	Dio_PortA_PA5,
+	Dio_PortA_PA6,
+	Dio_PortA_PA7,
+
+	Dio_PortB_PB0,
+	Dio_PortB_PB1,
+	Dio_PortB_PB2,
+	Dio_PortB_PB3,
+	Dio_PortB_PB4,
+	Dio_PortB_PB5,
+	Dio_PortB_PB6,
+	Dio_PortB_PB7,
+
+	Dio_PortC_PC0,
+	Dio_PortC_PC1,
+	Dio_PortC_PC2,
+	Dio_PortC_PC3,
+	Dio_PortC_PC4,
+	Dio_PortC_PC5,
+	Dio_PortC_PC6,
+	Dio_PortC_PC7,
+
+	Dio_PortD_PD0,
+	Dio_PortD_PD1,
+	Dio_PortD_PD2,
+	Dio_PortD_PD3,
+	Dio_PortD_PD4,
+	Dio_PortD_PD5,
+	Dio_PortD_PD6,
+	Dio_PortD_PD7,
+
+	Dio_PortE_PE0,
+	Dio_PortE_PE1,
+	Dio_PortE_PE2,
+	Dio_PortE_PE3,
+	Dio_PortE_PE4,
+	Dio_PortE_PE5,
+
+	Dio_PortF_PF0 =40,
+	Dio_PortF_PF1,
+	Dio_PortF_PF2,
+	Dio_PortF_PF3,
+	Dio_PortF_PF4
 }Dio_ChannelType;
+
+
 
 //@ref Port_PinMode_define
 #define		Port_PinMode_GPIO			0
@@ -115,6 +118,51 @@ typedef enum
 #define 	Port_PinOutCurrent_4mA		1
 #define 	Port_PinOutCurrent_8mA		2
 
+
+/**********************************************************************************************************************
+ *  GLOBAL DATA TYPES AND STRUCTURES
+ *********************************************************************************************************************/
+typedef struct
+{
+	Dio_ChannelType PortPinType;			//specifies the GPIO pin Number to be configured.
+	//this parameter must be set based on a value @ref Port_PinType_define
+
+	uint8 PortPinMode ;			//specifies the GPIO pin Mode to be configured.
+	//this parameter must be set based on a value @ref Port_PinMode_define
+
+	uint8 PortPinLevelValue ;		//specifies the GPIO pin Level to be configured.
+	//this parameter must be set based on a value @ref Port_PinLevel_define
+
+	uint8 PortPinDirection ;		//specifies the GPIO pin Direction to be configured.
+	//this parameter must be set based on a value @ref Port_PinDir_define
+
+	uint8 PortPinInternalAttach ;	//specifies the GPIO pin internal pull up or pull down attach to be configured.
+	//this parameter must be set based on a value @ref Port_PinAttach_define
+
+	uint8 PortPinOutputCurrent ;	//specifies the GPIO pin output current to be configured.
+	//this parameter must be set based on a value @ref Port_PinOutCurrent_define
+
+}Port_ConfigType;
+
+typedef enum
+{
+	Low,
+	High
+}Dio_LevelType;
+
+
+typedef enum
+{
+	Pin0,
+	Pin1,
+	Pin2,
+	Pin3,
+	Pin4,
+	Pin5,
+	Pin6,
+	Pin7
+}PinNum;
+
 /**********************************************************************************************************************
  *  GLOBAL DATA PROTOTYPES
  *********************************************************************************************************************/
@@ -123,7 +171,7 @@ typedef enum
 /**********************************************************************************************************************
  *  GLOBAL FUNCTION PROTOTYPES
  *********************************************************************************************************************/
-void port_init (GPIO_TypeDef * GPIOx, Port_ConfigType* ConfigPtr);
+void port_init (Port_ConfigType* ConfigPtr);
 Dio_LevelType Dio_ReadChannel (GPIO_TypeDef * GPIOx,Dio_ChannelType ChannelId);
 void Dio_WriteChannel (GPIO_TypeDef * GPIOx,Dio_ChannelType ChannelId,Dio_LevelType Level );
 uint8 Dio_ReadPort (GPIO_TypeDef * GPIOx);

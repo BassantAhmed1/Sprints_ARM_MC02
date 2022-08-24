@@ -42,6 +42,74 @@
 /**********************************************************************************************************************
  *  LOCAL FUNCTIONS
  *********************************************************************************************************************/
+uint32 Get_Port (Dio_ChannelType Port)
+{
+	switch ((uint8)Port/8)
+	{
+	case 0:	//PortA
+		return (uint32)GPIOA_Base;
+		break;
+
+	case 1: //PortB
+		return (uint32)GPIOB_Base;
+		break;
+
+	case 2: //PortC
+		return (uint32)GPIOC_Base;
+		break;
+
+	case 3: //PortD
+		return (uint32)GPIOD_Base;
+		break;
+
+	case 4: //PortE
+		return (uint32)GPIOE_Base;
+		break;
+
+	case 5: //PortF
+		return (uint32)GPIOF_Base;
+		break;
+	}
+}
+
+PinNum Get_Pin (Dio_ChannelType Pin)
+{
+	uint8 pinx = Pin % 8;
+	switch (pinx)
+	{
+	case 0:	//Pin0
+		return Pin0;
+		break;
+
+	case 1: //Pin1
+		return Pin1;
+		break;
+
+	case 2: //Pin2
+		return Pin2;
+		break;
+
+	case 3: //Pin3
+		return Pin3;
+		break;
+
+	case 4: //Pin4
+		return Pin4;
+		break;
+
+	case 5: //Pin5
+		return Pin5;
+		break;
+
+	case 6: //Pin6
+		return Pin6;
+		break;
+
+	case 7: //Pin7
+		return Pin7;
+		break;
+	}
+}
 
 /**********************************************************************************************************************
  *  GLOBAL FUNCTIONS
@@ -57,47 +125,50 @@
  * \Return value:   : Std_ReturnType  E_OK
  *                                    E_NOT_OK
  *******************************************************************************/
-void port_init (GPIO_TypeDef * GPIOx , Port_ConfigType* ConfigPtr)
+void port_init (Port_ConfigType* ConfigPtr)
 {
+	uint32 Portx = Get_Port(ConfigPtr->PortPinType);
+	uint8 Pinx = Get_Pin(ConfigPtr->PortPinType);
+
 	//Enable the clock
-	if ((uint32)GPIOx == GPIOA_Base)
+	if (Portx == GPIOA_Base)
 		GPIOA_CLK_EN();
-	else if ((uint32)GPIOx == GPIOB_Base)
+	else if (Portx == GPIOB_Base)
 		GPIOB_CLK_EN();
-	else if ((uint32)GPIOx == GPIOC_Base)
+	else if (Portx == GPIOC_Base)
 		GPIOC_CLK_EN();
-	else if ((uint32)GPIOx == GPIOD_Base)
+	else if (Portx == GPIOD_Base)
 		GPIOD_CLK_EN();
-	else if ((uint32)GPIOx == GPIOE_Base)
+	else if (Portx == GPIOE_Base)
 		GPIOE_CLK_EN();
-	else if ((uint32)GPIOx == GPIOF_Base)
+	else if (Portx == GPIOF_Base)
 		GPIOA_CLK_EN();
 
 
 
 	//Set the direction of the GPIO port pins by programming the GPIODIR register.
 	if (ConfigPtr->PortPinDirection == Port_PinDir_Input)
-		Clear_bit_GPIO((uint32)GPIOx ,ConfigPtr->PortPinNumber , GPIODIR_offset);
+		Clear_bit_GPIO(Portx ,Pinx, GPIODIR_offset);
 	else
-		Set_bit_GPIO((uint32)GPIOx ,ConfigPtr->PortPinNumber , GPIODIR_offset);
+		Set_bit_GPIO(Portx ,Pinx , GPIODIR_offset);
 
 	//Configure the GPIOAFSEL register to program each bit as a GPIO or alternate pin
 	if (ConfigPtr->PortPinMode == Port_PinMode_GPIO)
-		Clear_bit_GPIO((uint32)GPIOx ,ConfigPtr->PortPinNumber , GPIOAFSEL_offset);
+		Clear_bit_GPIO(Portx ,Pinx , GPIOAFSEL_offset);
 	else
-		Set_bit_GPIO((uint32)GPIOx ,ConfigPtr->PortPinNumber , GPIOAFSEL_offset);
+		Set_bit_GPIO(Portx ,Pinx , GPIOAFSEL_offset);
 
 	//Set the drive strength for each of the pins through the GPIODR2R, GPIODR4R, and GPIODR8R registers
 	switch (ConfigPtr->PortPinOutputCurrent)
 	{
 	case Port_PinOutCurrent_2mA :
-		Set_bit_GPIO((uint32)GPIOx ,ConfigPtr->PortPinNumber , GPIODR2R_offset);
+		Set_bit_GPIO(Portx ,Pinx , GPIODR2R_offset);
 		break;
 	case Port_PinOutCurrent_4mA :
-		Set_bit_GPIO((uint32)GPIOx ,ConfigPtr->PortPinNumber , GPIODR4R_offset);
+		Set_bit_GPIO(Portx ,Pinx , GPIODR4R_offset);
 		break;
 	case Port_PinOutCurrent_8mA :
-		Set_bit_GPIO((uint32)GPIOx ,ConfigPtr->PortPinNumber , GPIODR8R_offset);
+		Set_bit_GPIO(Portx ,Pinx , GPIODR8R_offset);
 		break;
 	}
 
@@ -106,18 +177,18 @@ void port_init (GPIO_TypeDef * GPIOx , Port_ConfigType* ConfigPtr)
 	switch (ConfigPtr->PortPinInternalAttach)
 	{
 	case Port_PinAttach_PU :
-		Set_bit_GPIO((uint32)GPIOx ,ConfigPtr->PortPinNumber , GPIOPUR_offset);
+		Set_bit_GPIO(Portx ,Pinx , GPIOPUR_offset);
 		break;
 	case Port_PinAttach_PD :
-		Set_bit_GPIO((uint32)GPIOx ,ConfigPtr->PortPinNumber , GPIOPDR_offset);
+		Set_bit_GPIO(Portx ,Pinx , GPIOPDR_offset);
 		break;
 	case Port_PinAttach_OD :
-		Set_bit_GPIO((uint32)GPIOx ,ConfigPtr->PortPinNumber , GPIOODR_offset);
+		Set_bit_GPIO(Portx ,Pinx , GPIOODR_offset);
 		break;
 	}
 
 	if (ConfigPtr->PortPinLevelValue == Port_PinLevel_High)
-		Set_bit_GPIO((uint32)GPIOx ,ConfigPtr->PortPinNumber , GPIODATA_offset);
+		Set_bit_GPIO(Portx ,Pinx , GPIODATA_offset);
 
 }
 
