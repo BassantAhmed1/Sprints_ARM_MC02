@@ -142,7 +142,7 @@ void port_init (Port_ConfigType* ConfigPtr)
 	else if (Portx == GPIOE_Base)
 		{GPIOE_CLK_EN();}
 	else if (Portx == GPIOF_Base)
-		{GPIOA_CLK_EN();}
+		{GPIOF_CLK_EN();}
 
 
 
@@ -232,12 +232,12 @@ void Dio_WriteChannel (Dio_ChannelType ChannelId,Dio_LevelType Level )
 {
 	GPIO_TypeDef * Portx = Get_Port(ChannelId);
 	PinNum Pinx = Get_Pin(ChannelId);
-	uint32 * GPIODATAPtr = &Portx->GPIODATA + (1<<2);
+	volatile uint32 * GPIODATAPtr = Portx->GPIODATA + (0b10<<2);
 
 	if (Level == High)
 		*GPIODATAPtr |= (1<<Pinx);
 	else
-		*GPIODATAPtr &= !(1<<Pinx);
+		*GPIODATAPtr &= ~(1<<Pinx);
 }
 
 /******************************************************************************

@@ -108,6 +108,22 @@ typedef struct
 	uint32 TAPLO 		:1;
 }GPTMTAMR_BF;
 
+typedef struct
+{
+	uint32 TATOCINT		:1;
+	uint32 CAMCINT		:1;
+	uint32 CAECINT		:1;
+	uint32 RTCCINT		:1;
+	uint32 TAMCINT		:1;
+	uint32 				:3;
+	uint32 TBTOCINT		:1;
+	uint32 CBMCINT		:1;
+	uint32 CBECINT		:1;
+	uint32 TBMCINT		:1;
+	uint32 				:4;
+	uint32 WUECINT		:1;
+}GPTMICR_BF;
+
 typedef union
 {
 	uint32		R;
@@ -138,6 +154,11 @@ typedef union
 	GPTMTAMR_BF	B;
 }GPTMTAMR_Tag;
 
+typedef union
+{
+	uint32 		R;
+	GPTMICR_BF	B;
+}GPTMICR_Tag;
 typedef struct
 {
 	volatile uint32 			GPIODATA;
@@ -193,7 +214,7 @@ typedef struct
 	volatile uint32 			GPTMIMR;
 	volatile uint32 			GPTMRIS;
 	volatile uint32 			GPTMMIS;
-	volatile uint32 			GPTMICR;
+	volatile GPTMICR_Tag 		GPTMICR;
 	volatile uint32 			GPTMTAILR;
 	volatile uint32 			GPTMTBILR;
 	volatile uint32 			GPTMTAMATCHR;
@@ -288,7 +309,7 @@ typedef union
 #define GPIOC_Base						0x4005A000UL
 #define GPIOD_Base						0x4005B000UL
 #define GPIOE_Base						0x4005C000UL
-#define GPIOF_Base						0x4005D000UL
+#define GPIOF_Base						0x40025000UL
 
 #define GPIODATA_offset					0x000
 #define GPIODIR_offset					0x400
@@ -363,6 +384,7 @@ typedef union
 #define GPIOD							((GPIO_TypeDef *)GPIOD_Base)
 #define GPIOE							((GPIO_TypeDef *)GPIOE_Base)
 #define GPIOF							((GPIO_TypeDef *)GPIOF_Base)
+#define GPIO_PORTF_DATA_R 				(*(( volatile unsigned long *)0x40025008))
 
 #define Timer0_16						((GPT_TypeDef *)Timer0_16_Base)
 #define Timer1_16						((GPT_TypeDef *)Timer1_16_Base)
@@ -386,17 +408,17 @@ typedef union
 //clock enable Macros:
 //-*-*-*-*-*-*-*-*-*-*-*
 
-#define GPIOA_CLK_EN()					*((uint8 *)(Peripherals_BitBand_Base + (0xFE608 * 32)+ (0*4)))=0x0F
-#define GPIOB_CLK_EN()					*((uint8 *)(Peripherals_BitBand_Base + (0xFE608 * 32)+ (1*4)))=0x0F
-#define GPIOC_CLK_EN()					*((uint8 *)(Peripherals_BitBand_Base + (0xFE608 * 32)+ (2*4)))=0x0F
-#define GPIOD_CLK_EN()					*((uint8 *)(Peripherals_BitBand_Base + (0xFE608 * 32)+ (3*4)))=0x0F
-#define GPIOE_CLK_EN()					*((uint8 *)(Peripherals_BitBand_Base + (0xFE608 * 32)+ (4*4)))=0x0F
-#define GPIOF_CLK_EN()					*((uint8 *)(Peripherals_BitBand_Base + (0xFE608 * 32)+ (5*4)))=0x0F
+#define GPIOA_CLK_EN()					*((uint8 *)(Peripherals_BitBand_Base + (0xFE608 * 32)+ (0*4)))=0x0F; *((uint8 *)(Peripherals_BitBand_Base + (0xFE108 * 32)+ (0*4)))=0x0F
+#define GPIOB_CLK_EN()					*((uint8 *)(Peripherals_BitBand_Base + (0xFE608 * 32)+ (1*4)))=0x0F; *((uint8 *)(Peripherals_BitBand_Base + (0xFE108 * 32)+ (1*4)))=0x0F
+#define GPIOC_CLK_EN()					*((uint8 *)(Peripherals_BitBand_Base + (0xFE608 * 32)+ (2*4)))=0x0F; *((uint8 *)(Peripherals_BitBand_Base + (0xFE108 * 32)+ (2*4)))=0x0F
+#define GPIOD_CLK_EN()					*((uint8 *)(Peripherals_BitBand_Base + (0xFE608 * 32)+ (3*4)))=0x0F; *((uint8 *)(Peripherals_BitBand_Base + (0xFE108 * 32)+ (3*4)))=0x0F
+#define GPIOE_CLK_EN()					*((uint8 *)(Peripherals_BitBand_Base + (0xFE608 * 32)+ (4*4)))=0x0F; *((uint8 *)(Peripherals_BitBand_Base + (0xFE108 * 32)+ (4*4)))=0x0F
+#define GPIOF_CLK_EN()					*((uint8 *)(Peripherals_BitBand_Base + (0xFE608 * 32)+ (5*4)))=0x0F; *((uint8 *)(Peripherals_BitBand_Base + (0xFE108 * 32)+ (5*4)))=0x0F
 
-#define GPTTimer16_0_CLK_EN()			*((uint8 *)(Peripherals_BitBand_Base + (0xFE604 * 32)+ (0*4)))=0x0F
-#define GPTTimer16_1_CLK_EN()			*((uint8 *)(Peripherals_BitBand_Base + (0xFE604 * 32)+ (1*4)))=0x0F
-#define GPTTimer16_2_CLK_EN()			*((uint8 *)(Peripherals_BitBand_Base + (0xFE604 * 32)+ (2*4)))=0x0F
-#define GPTTimer16_3_CLK_EN()			*((uint8 *)(Peripherals_BitBand_Base + (0xFE604 * 32)+ (3*4)))=0x0F
+#define GPTTimer16_0_CLK_EN()			*((uint8 *)(Peripherals_BitBand_Base + (0xFE604 * 32)+ (0*4)))=0x0F; *((uint8 *)(Peripherals_BitBand_Base + (0xFE104 * 32)+ (16*4)))=0x0F
+#define GPTTimer16_1_CLK_EN()			*((uint8 *)(Peripherals_BitBand_Base + (0xFE604 * 32)+ (1*4)))=0x0F; *((uint8 *)(Peripherals_BitBand_Base + (0xFE104 * 32)+ (17*4)))=0x0F
+#define GPTTimer16_2_CLK_EN()			*((uint8 *)(Peripherals_BitBand_Base + (0xFE604 * 32)+ (2*4)))=0x0F; *((uint8 *)(Peripherals_BitBand_Base + (0xFE104 * 32)+ (18*4)))=0x0F
+#define GPTTimer16_3_CLK_EN()			*((uint8 *)(Peripherals_BitBand_Base + (0xFE604 * 32)+ (3*4)))=0x0F; *((uint8 *)(Peripherals_BitBand_Base + (0xFE104 * 32)+ (19*4)))=0x0F
 #define GPTTimer16_4_CLK_EN()			*((uint8 *)(Peripherals_BitBand_Base + (0xFE604 * 32)+ (4*4)))=0x0F
 #define GPTTimer16_5_CLK_EN()			*((uint8 *)(Peripherals_BitBand_Base + (0xFE604 * 32)+ (5*4)))=0x0F
 #define GPTTimer32_0_CLK_EN()			*((uint8 *)(Peripherals_BitBand_Base + (0xFE65C * 32)+ (0*4)))=0x0F
@@ -419,6 +441,8 @@ typedef union
  *  GLOBAL FUNCTION PROTOTYPES
  *********************************************************************************************************************/
 void GPIO_init(void);
+
+void GPT_SetConfig_init (void);
 
 #endif /* SRC_COMMON_MCU_HW_H_ */
 
