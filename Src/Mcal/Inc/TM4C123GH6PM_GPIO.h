@@ -172,11 +172,11 @@ typedef enum
  *  GLOBAL FUNCTION PROTOTYPES
  *********************************************************************************************************************/
 void port_init (Port_ConfigType* ConfigPtr);
-Dio_LevelType Dio_ReadChannel (GPIO_TypeDef * GPIOx,Dio_ChannelType ChannelId);
-void Dio_WriteChannel (GPIO_TypeDef * GPIOx,Dio_ChannelType ChannelId,Dio_LevelType Level );
+Dio_LevelType Dio_ReadChannel (Dio_ChannelType ChannelId);
+void Dio_WriteChannel (Dio_ChannelType ChannelId,Dio_LevelType Level );
 uint8 Dio_ReadPort (GPIO_TypeDef * GPIOx);
 void Dio_WritePort (GPIO_TypeDef * GPIOx,uint8 Level );
-Dio_LevelType Dio_FlipChannel (GPIO_TypeDef * GPIOx,Dio_ChannelType ChannelId);
+Dio_LevelType Dio_FlipChannel (Dio_ChannelType ChannelId);
 
 
 #endif /* SRC_MCAL_INC_TM4C123GH6PM_GPIO_H_ */

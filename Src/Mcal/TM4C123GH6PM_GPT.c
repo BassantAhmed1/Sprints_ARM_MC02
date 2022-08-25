@@ -167,13 +167,13 @@ GPT_TypeDef * CLK_AF_Enable (GPT_TimerType Timer, uint32 Portx , uint8 Pinx)
 	}
 
 	if (Portx == GPIOB_Base)
-		GPIOB_CLK_EN();
+		{GPIOB_CLK_EN();}
 	else if (Portx == GPIOC_Base)
-		GPIOC_CLK_EN();
+		{GPIOC_CLK_EN();}
 	else if (Portx == GPIOD_Base)
-		GPIOD_CLK_EN();
+		{GPIOD_CLK_EN();}
 	else if (Portx == GPIOF_Base)
-		GPIOA_CLK_EN();
+		{GPIOA_CLK_EN();}
 
 	//make the pin AF to the timer
 	Set_bit_GPIO(Portx ,Pinx , GPIOAFSEL_offset);
@@ -269,38 +269,44 @@ void GPT_EnableNotification (GPT_ChannelType Channel)
 }
 
 
-void GPT_StartTimer_0 (uint8 Seconds_ms ,GPT_ConfigType* ConfigPtr)
+void GPT_StartTimer_0 (uint32 Seconds_ms )
 {
-	uint32 counts = (Seconds_ms*1000)/(ConfigPtr->GPTChannelTickFreq);
-	Timer0_16->GPTMTAMR.B.TACDIR = Count_Dir_up;
+	uint32 counts = GPT_Freq_Define/(1000 /Seconds_ms);
+	Timer0_32->GPTMTAMR.B.TACDIR = Count_Dir_up;
 
 	//Load the start value into the GPTM Timer n Interval Load Register (GPTMTnILR).
-	Timer0_16->GPTMTAILR = counts;
+	Timer0_32->GPTMTAILR = counts;
 
 	//Set the TnEN bit in the GPTMCTL register to enable the timer and start counting.
-	Timer0_16->GPTMCTL.B.TAEN = 1;
+	Timer0_32->GPTMCTL.B.TAEN = 1;
 
 	/*Poll the GPTMRIS register or wait for the interrupt to be generated (if enabled). In both cases,
 	the status flags are cleared by writing a 1 to the appropriate bit of the GPTM Interrupt Clear
 	Register (GPTMICR).*/
-}
-
-
-void GPT_StopTimer ()
-{
+	//while (!((Timer0_32->GPTMRIS & (1<<4))>>4));
 
 }
 
 
-void GPT_SetMode ()
-{
-
-}
+//void GPT_StopTimer ()
+//{
+//
+//}
+//
+//
+//void GPT_SetMode ()
+//{
+//
+//}
 
 void TIMER0A_Handler ()
 {
 
-};
+
+	Timer0_32->GPTMICR.B.TAMCINT = 1; //clear interrupt
+}
+
+
 
 /**********************************************************************************************************************
  *  END OF FILE: FileName.c

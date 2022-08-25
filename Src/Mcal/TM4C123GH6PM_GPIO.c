@@ -128,21 +128,21 @@ PinNum Get_Pin (Dio_ChannelType Pin)
 void port_init (Port_ConfigType* ConfigPtr)
 {
 	uint32 Portx = Get_Port(ConfigPtr->PortPinType);
-	uint8 Pinx = Get_Pin(ConfigPtr->PortPinType);
+	PinNum Pinx = Get_Pin(ConfigPtr->PortPinType);
 
 	//Enable the clock
 	if (Portx == GPIOA_Base)
-		GPIOA_CLK_EN();
+		{GPIOA_CLK_EN();}
 	else if (Portx == GPIOB_Base)
-		GPIOB_CLK_EN();
+		{GPIOB_CLK_EN();}
 	else if (Portx == GPIOC_Base)
-		GPIOC_CLK_EN();
+		{GPIOC_CLK_EN();}
 	else if (Portx == GPIOD_Base)
-		GPIOD_CLK_EN();
+		{GPIOD_CLK_EN();}
 	else if (Portx == GPIOE_Base)
-		GPIOE_CLK_EN();
+		{GPIOE_CLK_EN();}
 	else if (Portx == GPIOF_Base)
-		GPIOA_CLK_EN();
+		{GPIOA_CLK_EN();}
 
 
 
@@ -187,6 +187,9 @@ void port_init (Port_ConfigType* ConfigPtr)
 		break;
 	}
 
+	//Enable DEN
+	Set_bit_GPIO(Portx ,Pinx , GPIODEN_offset);
+
 	if (ConfigPtr->PortPinLevelValue == Port_PinLevel_High)
 		Set_bit_GPIO(Portx ,Pinx , GPIODATA_offset);
 
@@ -203,9 +206,12 @@ void port_init (Port_ConfigType* ConfigPtr)
  * \Return value:   : Std_ReturnType  E_OK
  *                                    E_NOT_OK
  *******************************************************************************/
-Dio_LevelType Dio_ReadChannel (GPIO_TypeDef * GPIOx,Dio_ChannelType ChannelId)
+Dio_LevelType Dio_ReadChannel (Dio_ChannelType ChannelId)
 {
-	if((GPIOx->GPIODATA & (1<<ChannelId))==1)
+	GPIO_TypeDef * Portx = Get_Port(ChannelId);
+	PinNum Pinx = Get_Pin(ChannelId);
+
+	if((Portx->GPIODATA & (1<<Pinx))==1)
 		return 1;
 	else
 		return 0;
@@ -222,12 +228,16 @@ Dio_LevelType Dio_ReadChannel (GPIO_TypeDef * GPIOx,Dio_ChannelType ChannelId)
  * \Return value:   : Std_ReturnType  E_OK
  *                                    E_NOT_OK
  *******************************************************************************/
-void Dio_WriteChannel (GPIO_TypeDef * GPIOx,Dio_ChannelType ChannelId,Dio_LevelType Level )
+void Dio_WriteChannel (Dio_ChannelType ChannelId,Dio_LevelType Level )
 {
+	GPIO_TypeDef * Portx = Get_Port(ChannelId);
+	PinNum Pinx = Get_Pin(ChannelId);
+	uint32 * GPIODATAPtr = &Portx->GPIODATA + (1<<2);
+
 	if (Level == High)
-		Set_bit_GPIO((uint32)GPIOx ,ChannelId , GPIODATA_offset);
+		*GPIODATAPtr |= (1<<Pinx);
 	else
-		Clear_bit_GPIO((uint32)GPIOx ,ChannelId , GPIODATA_offset);
+		*GPIODATAPtr &= !(1<<Pinx);
 }
 
 /******************************************************************************
@@ -273,10 +283,16 @@ void Dio_WritePort (GPIO_TypeDef * GPIOx,uint8 Level )
  * \Return value:   : Std_ReturnType  E_OK
  *                                    E_NOT_OK
  *******************************************************************************/
-//Dio_LevelType Dio_FlipChannel (GPIO_TypeDef * GPIOx,Dio_ChannelType ChannelId)
-//{
+Dio_LevelType Dio_FlipChannel (Dio_ChannelType ChannelId)
+{
+	uint32 Portx = Get_Port(ChannelId);
+	PinNum Pinx = Get_Pin(ChannelId);
 
-//}
+	if (Dio_ReadChannel (ChannelId) == Low)
+		Set_bit_GPIO(Portx ,Pinx , (GPIODATA_offset));
+	else
+		Clear_bit_GPIO(Portx ,Pinx , GPIODATA_offset);
+}
 /**********************************************************************************************************************
  *  END OF FILE: FileName.c
  *********************************************************************************************************************/
