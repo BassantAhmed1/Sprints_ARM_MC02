@@ -9,7 +9,11 @@
 #include "../Mcal/Inc/TM4C123GH6PM_GPIO.h"
 #include "../Mcal/Inc/TM4C123GH6PM_GPT.h"
 #include "../Common/Mcu_Hw.h"
+#include "../Config/IntCtrl_Cfg.h"
+#include "../Mcal/Inc/IntCtrl.h"
+#include "../Mcal/Inc/IntCtrl_Types.h"
 
+extern IntCtrl_ConfigType IntCtrlConfig;
 //void Clk_Enable (void){
 //	//Enable main oscillator
 //	RCC->B.SYSDIV = 0x0;
@@ -20,11 +24,11 @@ void LedOnPWM_Period (uint32 OnTime, uint32 OffTime ,  Dio_ChannelType PortChann
 int main(void)
 {
 	//Clk_Enable ();
+	IntCtrl_Init(&IntCtrlConfig);
 	GPIO_init();
 	GPT_SetConfig_init();
 	while(1)
 	{
-		Dio_WriteChannel(Dio_PortF_PF1, High);
 
 		LedOnPWM_Period(1000 , 1000 , Dio_PortF_PF1);
 
@@ -34,7 +38,7 @@ int main(void)
 void GPT_SetConfig_init (void)
 {
 	GPT_ConfigType GPTConfig;
-	GPTConfig.ChannelID = GPT_PortC_PC4;
+	GPTConfig.ChannelID = WT0CCP0_PortC_PC4;
 	GPTConfig.ChannelMode = GPT_ChannelMode_OneShot;
 	GPTConfig.GPTChannelTickFreq = GPT_Freq_Define;
 	GPTConfig.GPTChannelTickMax = 4000000;

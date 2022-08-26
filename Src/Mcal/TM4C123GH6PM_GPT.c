@@ -167,13 +167,13 @@ GPT_TypeDef * CLK_AF_Enable (GPT_TimerType Timer, uint32 Portx , uint8 Pinx)
 	}
 
 	if (Portx == GPIOB_Base)
-		{GPIOB_CLK_EN();}
+	{GPIOB_CLK_EN();}
 	else if (Portx == GPIOC_Base)
-		{GPIOC_CLK_EN();}
+	{GPIOC_CLK_EN();}
 	else if (Portx == GPIOD_Base)
-		{GPIOD_CLK_EN();}
+	{GPIOD_CLK_EN();}
 	else if (Portx == GPIOF_Base)
-		{GPIOA_CLK_EN();}
+	{GPIOA_CLK_EN();}
 
 	//make the pin AF to the timer
 	Set_bit_GPIO(Portx ,Pinx , GPIOAFSEL_offset);
@@ -206,6 +206,7 @@ GPT_TypeDef * CLK_AF_Enable (GPT_TimerType Timer, uint32 Portx , uint8 Pinx)
 	}
 }
 
+
 /**********************************************************************************************************************
  *  GLOBAL FUNCTIONS
  *********************************************************************************************************************/
@@ -228,7 +229,6 @@ void GPT_init(GPT_ConfigType* ConfigPtr)
 	uint32 Portx = Get_Port_GPT(ConfigPtr->ChannelID);
 	GPIO_TypeDef* PortPtr = Portx;
 	uint8 Pinx = Get_Pin_GPT(ConfigPtr->ChannelID);
-	uint32 * ConfigReg ;
 
 	//Enable the clock and set the AF Pin to timer pin
 	TimerPtr = CLK_AF_Enable (ConfigPtr->GPTTimerType,Portx ,Pinx);
@@ -283,7 +283,7 @@ void GPT_StartTimer_0 (uint32 Seconds_ms )
 	/*Poll the GPTMRIS register or wait for the interrupt to be generated (if enabled). In both cases,
 	the status flags are cleared by writing a 1 to the appropriate bit of the GPTM Interrupt Clear
 	Register (GPTMICR).*/
-	//while (!((Timer0_32->GPTMRIS & (1<<4))>>4));
+	while (!((Timer0_32->GPTMRIS & (1<<4))>>4));
 
 }
 

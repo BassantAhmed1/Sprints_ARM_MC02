@@ -230,14 +230,14 @@ Dio_LevelType Dio_ReadChannel (Dio_ChannelType ChannelId)
  *******************************************************************************/
 void Dio_WriteChannel (Dio_ChannelType ChannelId,Dio_LevelType Level )
 {
-	GPIO_TypeDef * Portx = Get_Port(ChannelId);
+	uint32 Portx = Get_Port(ChannelId);
 	PinNum Pinx = Get_Pin(ChannelId);
-	volatile uint32 * GPIODATAPtr = &Portx->GPIODATA + ((ChannelId % 8)<<2);
+	//volatile uint32 * GPIODATAPtr = &Portx->GPIODATA + ((ChannelId % 8)<<2);
 
 	if (Level == High)
-		*GPIODATAPtr |= (1<<Pinx);
+		Set_bit_GPIO(Portx ,Pinx , 0x3FC);
 	else
-		*GPIODATAPtr &= ~(1<<Pinx);
+		Clear_bit_GPIO(Portx ,Pinx , 0x3FC);
 }
 
 /******************************************************************************

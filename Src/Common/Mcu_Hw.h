@@ -73,10 +73,10 @@ typedef struct
 	uint32 VECTRESET	:1;
 	uint32 VECTCLRACT	:1;
 	uint32 SYSRESREQ	:1;
-	uint32				:5;
-	uint32				:2;
+	uint32 Reserved		:5;
+	uint32 Reserved1	:2;
 	uint32 PRIGROUP		:3;
-	uint32				:4;
+	uint32 Reserved2	:4;
 	uint32 ENDIANESS	:1;
 	uint32 VECTKEY		:16;
 }APINT_BF;
@@ -309,7 +309,7 @@ typedef union
 #define GPIOC_Base						0x4005A000UL
 #define GPIOD_Base						0x4005B000UL
 #define GPIOE_Base						0x4005C000UL
-#define GPIOF_Base						0x40025000UL
+#define GPIOF_Base						0x4005D000UL
 
 #define GPIODATA_offset					0x000
 #define GPIODIR_offset					0x400
@@ -366,8 +366,48 @@ typedef union
 #define GPTMTAV_offset					0x050
 #define GPTMTBV_offset					0x054
 
-#define APINT							*((volatile APINT_Tag 	*)(CORTEXM4_Base+0xD0C))
+#define APINT							*((volatile APINT_Tag *)(CORTEXM4_Base+0xD0C))
 #define INTCTRL							*((volatile INTCTRL_Tag *)(CORTEXM4_Base+0xD04))
+#define NVIC_EN0						*((volatile uint32 *)(CORTEXM4_Base+0x100))
+#define NVIC_EN1						*((volatile uint32 *)(CORTEXM4_Base+0x104))
+#define NVIC_EN2						*((volatile uint32 *)(CORTEXM4_Base+0x108))
+#define NVIC_EN3						*((volatile uint32 *)(CORTEXM4_Base+0x10C))
+#define NVIC_EN4						*((volatile uint32 *)(CORTEXM4_Base+0x110))
+#define NVIC_PRI0						*((volatile uint32 *)(CORTEXM4_Base+0x400))
+#define NVIC_PRI1						*((volatile uint32 *)(CORTEXM4_Base+0x404))
+#define NVIC_PRI2						*((volatile uint32 *)(CORTEXM4_Base+0x408))
+#define NVIC_PRI3						*((volatile uint32 *)(CORTEXM4_Base+0x40C))
+#define NVIC_PRI4						*((volatile uint32 *)(CORTEXM4_Base+0x410))
+#define NVIC_PRI5						*((volatile uint32 *)(CORTEXM4_Base+0x414))
+#define NVIC_PRI6						*((volatile uint32 *)(CORTEXM4_Base+0x418))
+#define NVIC_PRI7						*((volatile uint32 *)(CORTEXM4_Base+0x41C))
+#define NVIC_PRI8						*((volatile uint32 *)(CORTEXM4_Base+0x420))
+#define NVIC_PRI9						*((volatile uint32 *)(CORTEXM4_Base+0x424))
+#define NVIC_PRI10						*((volatile uint32 *)(CORTEXM4_Base+0x428))
+#define NVIC_PRI11						*((volatile uint32 *)(CORTEXM4_Base+0x42C))
+#define NVIC_PRI12						*((volatile uint32 *)(CORTEXM4_Base+0x430))
+#define NVIC_PRI13						*((volatile uint32 *)(CORTEXM4_Base+0x434))
+#define NVIC_PRI14						*((volatile uint32 *)(CORTEXM4_Base+0x438))
+#define NVIC_PRI15						*((volatile uint32 *)(CORTEXM4_Base+0x43C))
+#define NVIC_PRI16						*((volatile uint32 *)(CORTEXM4_Base+0x440))
+#define NVIC_PRI17						*((volatile uint32 *)(CORTEXM4_Base+0x444))
+#define NVIC_PRI18						*((volatile uint32 *)(CORTEXM4_Base+0x448))
+#define NVIC_PRI19						*((volatile uint32 *)(CORTEXM4_Base+0x44C))
+#define NVIC_PRI20						*((volatile uint32 *)(CORTEXM4_Base+0x450))
+#define NVIC_PRI21						*((volatile uint32 *)(CORTEXM4_Base+0x454))
+#define NVIC_PRI22						*((volatile uint32 *)(CORTEXM4_Base+0x458))
+#define NVIC_PRI23						*((volatile uint32 *)(CORTEXM4_Base+0x45C))
+#define NVIC_PRI24						*((volatile uint32 *)(CORTEXM4_Base+0x460))
+#define NVIC_PRI25						*((volatile uint32 *)(CORTEXM4_Base+0x464))
+#define NVIC_PRI26						*((volatile uint32 *)(CORTEXM4_Base+0x468))
+#define NVIC_PRI27						*((volatile uint32 *)(CORTEXM4_Base+0x46C))
+#define NVIC_PRI28						*((volatile uint32 *)(CORTEXM4_Base+0x470))
+#define NVIC_PRI29						*((volatile uint32 *)(CORTEXM4_Base+0x474))
+#define NVIC_PRI30						*((volatile uint32 *)(CORTEXM4_Base+0x478))
+#define NVIC_PRI31						*((volatile uint32 *)(CORTEXM4_Base+0x47C))
+#define NVIC_PRI32						*((volatile uint32 *)(CORTEXM4_Base+0x480))
+#define NVIC_PRI33						*((volatile uint32 *)(CORTEXM4_Base+0x484))
+#define NVIC_PRI34						*((volatile uint32 *)(CORTEXM4_Base+0x488))
 
 #define RCC								*((volatile RCC_Tag *)(SystemControl_Base + 0x060))
 #define RCC2							*((volatile RCC2_Tag *)(SystemControl_Base + 0x070))
@@ -398,6 +438,37 @@ typedef union
 #define Timer3_32						((GPT_TypeDef *)Timer3_32_Base)
 #define Timer4_32						((GPT_TypeDef *)Timer4_32_Base)
 #define Timer5_32						((GPT_TypeDef *)Timer5_32_Base)
+
+//===============================================================
+//IRQ
+
+//#define Timer0A_16_IRQ					35
+//#define Timer0B_16_IRQ					36
+//#define Timer1A_16_IRQ					37
+//#define Timer1B_16_IRQ					38
+//#define Timer2A_16_IRQ					39
+//#define Timer2B_16_IRQ					40
+//#define Timer3A_16_IRQ					51
+//#define Timer3B_16_IRQ					52
+//#define Timer4A_16_IRQ					86
+//#define Timer4B_16_IRQ					87
+//#define Timer5A_16_IRQ					108
+//#define Timer5B_16_IRQ					109
+//#define Timer0A_32_IRQ					110
+//#define Timer0B_32_IRQ					111
+//#define Timer1A_32_IRQ					112
+//#define Timer1B_32_IRQ					113
+//#define Timer2A_32_IRQ					114
+//#define Timer2B_32_IRQ					115
+//#define Timer3A_32_IRQ					116
+//#define Timer3B_32_IRQ					117
+//#define Timer4A_32_IRQ					118
+//#define Timer4B_32_IRQ					119
+//#define Timer5A_32_IRQ					120
+//#define Timer5B_32_IRQ					121
+
+
+
 
 
 
