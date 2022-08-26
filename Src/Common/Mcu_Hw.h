@@ -408,12 +408,12 @@ typedef union
 //clock enable Macros:
 //-*-*-*-*-*-*-*-*-*-*-*
 
-#define GPIOA_CLK_EN()					*((uint8 *)(Peripherals_BitBand_Base + (0xFE608 * 32)+ (0*4)))=0x0F; *((uint8 *)(Peripherals_BitBand_Base + (0xFE108 * 32)+ (0*4)))=0x0F
-#define GPIOB_CLK_EN()					*((uint8 *)(Peripherals_BitBand_Base + (0xFE608 * 32)+ (1*4)))=0x0F; *((uint8 *)(Peripherals_BitBand_Base + (0xFE108 * 32)+ (1*4)))=0x0F
-#define GPIOC_CLK_EN()					*((uint8 *)(Peripherals_BitBand_Base + (0xFE608 * 32)+ (2*4)))=0x0F; *((uint8 *)(Peripherals_BitBand_Base + (0xFE108 * 32)+ (2*4)))=0x0F
-#define GPIOD_CLK_EN()					*((uint8 *)(Peripherals_BitBand_Base + (0xFE608 * 32)+ (3*4)))=0x0F; *((uint8 *)(Peripherals_BitBand_Base + (0xFE108 * 32)+ (3*4)))=0x0F
-#define GPIOE_CLK_EN()					*((uint8 *)(Peripherals_BitBand_Base + (0xFE608 * 32)+ (4*4)))=0x0F; *((uint8 *)(Peripherals_BitBand_Base + (0xFE108 * 32)+ (4*4)))=0x0F
-#define GPIOF_CLK_EN()					*((uint8 *)(Peripherals_BitBand_Base + (0xFE608 * 32)+ (5*4)))=0x0F; *((uint8 *)(Peripherals_BitBand_Base + (0xFE108 * 32)+ (5*4)))=0x0F
+#define GPIOA_CLK_EN()					*((uint8 *)(Peripherals_BitBand_Base + (0xFE608 * 32)+ (0*4)))=0x0F//; *((uint8 *)(Peripherals_BitBand_Base + (0xFE108 * 32)+ (0*4)))=0x0F
+#define GPIOB_CLK_EN()					*((uint8 *)(Peripherals_BitBand_Base + (0xFE608 * 32)+ (1*4)))=0x0F//; *((uint8 *)(Peripherals_BitBand_Base + (0xFE108 * 32)+ (1*4)))=0x0F
+#define GPIOC_CLK_EN()					*((uint8 *)(Peripherals_BitBand_Base + (0xFE608 * 32)+ (2*4)))=0x0F//; *((uint8 *)(Peripherals_BitBand_Base + (0xFE108 * 32)+ (2*4)))=0x0F
+#define GPIOD_CLK_EN()					*((uint8 *)(Peripherals_BitBand_Base + (0xFE608 * 32)+ (3*4)))=0x0F//; *((uint8 *)(Peripherals_BitBand_Base + (0xFE108 * 32)+ (3*4)))=0x0F
+#define GPIOE_CLK_EN()					*((uint8 *)(Peripherals_BitBand_Base + (0xFE608 * 32)+ (4*4)))=0x0F//; *((uint8 *)(Peripherals_BitBand_Base + (0xFE108 * 32)+ (4*4)))=0x0F
+#define GPIOF_CLK_EN()					*((uint8 *)(Peripherals_BitBand_Base + (0xFE608 * 32)+ (5*4)))=0x0F//; *((uint8 *)(Peripherals_BitBand_Base + (0xFE108 * 32)+ (5*4)))=0x0F
 
 #define GPTTimer16_0_CLK_EN()			*((uint8 *)(Peripherals_BitBand_Base + (0xFE604 * 32)+ (0*4)))=0x0F; *((uint8 *)(Peripherals_BitBand_Base + (0xFE104 * 32)+ (16*4)))=0x0F
 #define GPTTimer16_1_CLK_EN()			*((uint8 *)(Peripherals_BitBand_Base + (0xFE604 * 32)+ (1*4)))=0x0F; *((uint8 *)(Peripherals_BitBand_Base + (0xFE104 * 32)+ (17*4)))=0x0F

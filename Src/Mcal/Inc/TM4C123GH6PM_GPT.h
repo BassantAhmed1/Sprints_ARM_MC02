@@ -66,34 +66,38 @@ typedef enum
 
 typedef enum
 {
-	GPT_PortB_PB0,
-	GPT_PortB_PB1,
-	GPT_PortB_PB2,
-	GPT_PortB_PB3,
-	GPT_PortB_PB4,
-	GPT_PortB_PB5,
+	T2CCP0_PortB_PB0,
+	T2CCP1_PortB_PB1,
+	T3CCP0_PortB_PB2,
+	T3CCP1_PortB_PB3,
+	T1CCP0_PortB_PB4,
+	T1CCP1_PortB_PB5,
+	T0CCP0_PortB_PB6,
+	T0CCP1_PortB_PB7,
 
-	GPT_PortC_PC0 =8,
-	GPT_PortC_PC1,
-	GPT_PortC_PC2,
-	GPT_PortC_PC3,
-	GPT_PortC_PC4,
-	GPT_PortC_PC5,
-	GPT_PortC_PC6,
-	GPT_PortC_PC7,
+	T4CCP0_PortC_PC0,
+	T4CCP1_PortC_PC1,
+	T5CCP0_PortC_PC2,
+	T5CCP1_PortC_PC3,
+	WT0CCP0_PortC_PC4,
+	WT0CCP1_PortC_PC5,
+	WT1CCP0_PortC_PC6,
+	WT1CCP1_PortC_PC7,
 
-	GPT_PortD_PD0,
-	GPT_PortD_PD1,
-	GPT_PortD_PD2,
-	GPT_PortD_PD3,
-	GPT_PortD_PD4,
-	GPT_PortD_PD5,
-	GPT_PortD_PD6,
-	GPT_PortD_PD7,
+	WT2CCP0_PortD_PD0,
+	WT2CCP1_PortD_PD1,
+	WT3CCP0_PortD_PD2,
+	WT3CCP1_PortD_PD3,
+	WT4CCP0_PortD_PD4,
+	WT4CCP1_PortD_PD5,
+	WT5CCP0_PortD_PD6,
+	WT5CCP1_PortD_PD7,
 
-	GPT_PortF_PF2,
-	GPT_PortF_PF3,
-	GPT_PortF_PF4
+	T0CCP0_PortF_PF0,
+	T0CCP1_PortF_PF1,
+	T1CCP0_PortF_PF2,
+	T1CCP1_PortF_PF3,
+	T2CCP0_PortF_PF4
 }GPT_ChannelType;
 
 

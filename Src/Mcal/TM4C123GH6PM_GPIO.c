@@ -232,7 +232,7 @@ void Dio_WriteChannel (Dio_ChannelType ChannelId,Dio_LevelType Level )
 {
 	GPIO_TypeDef * Portx = Get_Port(ChannelId);
 	PinNum Pinx = Get_Pin(ChannelId);
-	volatile uint32 * GPIODATAPtr = Portx->GPIODATA + (0b10<<2);
+	volatile uint32 * GPIODATAPtr = &Portx->GPIODATA + ((ChannelId % 8)<<2);
 
 	if (Level == High)
 		*GPIODATAPtr |= (1<<Pinx);
