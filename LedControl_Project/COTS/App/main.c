@@ -9,13 +9,13 @@
 #include "../Mcal/Inc/TM4C123GH6PM_GPIO.h"
 #include "../Mcal/Inc/TM4C123GH6PM_GPT.h"
 #include "../Common/Mcu_Hw.h"
-#include "../Config/IntCtrl_Cfg.h"
+#include "../Mcal/Config/IntCtrl_Cfg.h"
 #include "../Mcal/Inc/IntCtrl.h"
 #include "../Mcal/Inc/IntCtrl_Types.h"
 #include "../Mcal/Inc/TM4c123GH6PM_SysTick.h"
+#include "../Hal/LED.h"
 
 
-void LedOnPWM_Period (uint32 OnTime, uint32 OffTime );
 void HW_Init (void);
 
 int main(void)
@@ -71,13 +71,6 @@ int main(void)
 	}
 }
 
-
-
-void LedOnPWM_Period (uint32 OnTime, uint32 OffTime )
-{
-	StartSysTick (OffTime);
-	StartSysTick (OnTime);
-}
 
 void HW_Init (void)
 {
