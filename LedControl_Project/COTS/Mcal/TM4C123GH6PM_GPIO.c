@@ -19,7 +19,7 @@
 /**********************************************************************************************************************
  *  INCLUDES
  *********************************************************************************************************************/
-#include "Std_Types.h"
+#include "../Common/Std_Types.h"
 #include "Inc/TM4C123GH6PM_GPIO.h"
 #include "../Config/GPIO_Cfg.h"
 #include "../Common/Mcu_Hw.h"
@@ -125,74 +125,80 @@ PinNum Get_Pin (Dio_ChannelType Pin)
  * \Parameters (out): None
  * \Return value:   : None
  *******************************************************************************/
-void port_init (Port_ConfigType* ConfigPtr)
+void port_init (void)
 {
-	uint32 Portx = Get_Port(ConfigPtr->PortPinType);
-	PinNum Pinx = Get_Pin(ConfigPtr->PortPinType);
-
-	//Enable the clock
-	if (Portx == GPIOA_Base)
-		{GPIOA_CLK_EN();}
-	else if (Portx == GPIOB_Base)
-		{GPIOB_CLK_EN();}
-	else if (Portx == GPIOC_Base)
-		{GPIOC_CLK_EN();}
-	else if (Portx == GPIOD_Base)
-		{GPIOD_CLK_EN();}
-	else if (Portx == GPIOE_Base)
-		{GPIOE_CLK_EN();}
-	else if (Portx == GPIOF_Base)
-		{GPIOF_CLK_EN();}
-
-
-
-	//Set the direction of the GPIO port pins by programming the GPIODIR register.
-	if (ConfigPtr->PortPinDirection == Port_PinDir_Input)
-		Clear_bit_GPIO(Portx ,Pinx, GPIODIR_offset);
-	else
-		Set_bit_GPIO(Portx ,Pinx , GPIODIR_offset);
-
-	//Configure the GPIOAFSEL register to program each bit as a GPIO or alternate pin
-	if (ConfigPtr->PortPinMode == Port_PinMode_GPIO)
-		Clear_bit_GPIO(Portx ,Pinx , GPIOAFSEL_offset);
-	else
-		Set_bit_GPIO(Portx ,Pinx , GPIOAFSEL_offset);
-
-	//Set the drive strength for each of the pins through the GPIODR2R, GPIODR4R, and GPIODR8R registers
-	switch (ConfigPtr->PortPinOutputCurrent)
+	uint32 Portx = 0;
+	PinNum Pinx = 0;
+	
+	int i=0;
+	
+	for(i = 0; i < PinConfig_size;i++)
 	{
-	case Port_PinOutCurrent_2mA :
-		Set_bit_GPIO(Portx ,Pinx , GPIODR2R_offset);
-		break;
-	case Port_PinOutCurrent_4mA :
-		Set_bit_GPIO(Portx ,Pinx , GPIODR4R_offset);
-		break;
-	case Port_PinOutCurrent_8mA :
-		Set_bit_GPIO(Portx ,Pinx , GPIODR8R_offset);
-		break;
+		Portx = Get_Port(PortConfig[i].PortPinType);
+		Pinx = Get_Pin(PortConfig[i].PortPinType);
+		//Enable the clock
+		if (Portx == GPIOA_Base)
+			{GPIOA_CLK_EN();}
+		else if (Portx == GPIOB_Base)
+			{GPIOB_CLK_EN();}
+		else if (Portx == GPIOC_Base)
+			{GPIOC_CLK_EN();}
+		else if (Portx == GPIOD_Base)
+			{GPIOD_CLK_EN();}
+		else if (Portx == GPIOE_Base)
+			{GPIOE_CLK_EN();}
+		else if (Portx == GPIOF_Base)
+			{GPIOF_CLK_EN();}
+
+
+
+		//Set the direction of the GPIO port pins by programming the GPIODIR register.
+		if (PortConfig[i].PortPinDirection == Port_PinDir_Input)
+			Clear_bit_GPIO(Portx ,Pinx, GPIODIR_offset);
+		else
+			Set_bit_GPIO(Portx ,Pinx , GPIODIR_offset);
+
+		//Configure the GPIOAFSEL register to program each bit as a GPIO or alternate pin
+		if (PortConfig[i].PortPinMode == Port_PinMode_GPIO)
+			Clear_bit_GPIO(Portx ,Pinx , GPIOAFSEL_offset);
+		else
+			Set_bit_GPIO(Portx ,Pinx , GPIOAFSEL_offset);
+
+		//Set the drive strength for each of the pins through the GPIODR2R, GPIODR4R, and GPIODR8R registers
+		switch (PortConfig[i].PortPinOutputCurrent)
+		{
+		case Port_PinOutCurrent_2mA :
+			Set_bit_GPIO(Portx ,Pinx , GPIODR2R_offset);
+			break;
+		case Port_PinOutCurrent_4mA :
+			Set_bit_GPIO(Portx ,Pinx , GPIODR4R_offset);
+			break;
+		case Port_PinOutCurrent_8mA :
+			Set_bit_GPIO(Portx ,Pinx , GPIODR8R_offset);
+			break;
+		}
+
+		//Program each pad in the port to have either pull-up, pull-down, or open drain functionality through
+		//the GPIOPUR, GPIOPDR, GPIOODR register.
+		switch (PortConfig[i].PortPinInternalAttach)
+		{
+		case Port_PinAttach_PU :
+			Set_bit_GPIO(Portx ,Pinx , GPIOPUR_offset);
+			break;
+		case Port_PinAttach_PD :
+			Set_bit_GPIO(Portx ,Pinx , GPIOPDR_offset);
+			break;
+		case Port_PinAttach_OD :
+			Set_bit_GPIO(Portx ,Pinx , GPIOODR_offset);
+			break;
+		}
+
+		//Enable DEN
+		Set_bit_GPIO(Portx ,Pinx , GPIODEN_offset);
+
+		if (PortConfig[i].PortPinLevelValue == Port_PinLevel_High)
+			Set_bit_GPIO(Portx ,Pinx , GPIODATA_offset);
 	}
-
-	//Program each pad in the port to have either pull-up, pull-down, or open drain functionality through
-	//the GPIOPUR, GPIOPDR, GPIOODR register.
-	switch (ConfigPtr->PortPinInternalAttach)
-	{
-	case Port_PinAttach_PU :
-		Set_bit_GPIO(Portx ,Pinx , GPIOPUR_offset);
-		break;
-	case Port_PinAttach_PD :
-		Set_bit_GPIO(Portx ,Pinx , GPIOPDR_offset);
-		break;
-	case Port_PinAttach_OD :
-		Set_bit_GPIO(Portx ,Pinx , GPIOODR_offset);
-		break;
-	}
-
-	//Enable DEN
-	Set_bit_GPIO(Portx ,Pinx , GPIODEN_offset);
-
-	if (ConfigPtr->PortPinLevelValue == Port_PinLevel_High)
-		Set_bit_GPIO(Portx ,Pinx , GPIODATA_offset);
-
 }
 
 /******************************************************************************
@@ -206,12 +212,17 @@ void port_init (Port_ConfigType* ConfigPtr)
  *******************************************************************************/
 Dio_LevelType Dio_ReadChannel (Dio_ChannelType ChannelId)
 {
-	uint32 * Portx = Get_Port(ChannelId)+ 0x3FC ;
+	uint32 * Portx = Get_Port(ChannelId) + 0x3FC ;
 	PinNum Pinx = Get_Pin(ChannelId);
-	uint32 Data = *Portx;
+	
+	uint32 Data = *Portx ;
+	
 
 	if((( Data & (1<<Pinx))>>Pinx)==1)
+	{
 		return High;
+	}
+		
 	else
 		return Low;
 }

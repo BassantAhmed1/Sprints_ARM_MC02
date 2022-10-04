@@ -6,7 +6,7 @@
  */
 
 
-#include "Std_Types.h"
+#include "../Common/Std_Types.h"
 #include "Inc/TM4c123GH6PM_SysTick.h"
 #include "Inc/TM4C123GH6PM_GPIO.h"
 #include "../Common/Mcu_Hw.h"
@@ -48,13 +48,13 @@
  * \Return value:   : Std_ReturnType  E_OK
  *                                    E_NOT_OK
  *******************************************************************************/
-void SysTick_init (SysTick_ConfigType * SysTickConfig)
+void SysTick_init (void)
 {
 
 	STCTRL =0;
 	STCTRL |= (1<<2) ;
 
-	if (SysTickConfig->IRQEnable)
+	if (STConfig.IRQEnable)
 			STCTRL |= (1<<1) ;
 		else
 			STCTRL &= ~(1<<1) ;

@@ -18,7 +18,7 @@
 /**********************************************************************************************************************
  *  INCLUDES
  *********************************************************************************************************************/
-#include "Std_Types.h"
+#include "../Common/Std_Types.h"
 #include "Inc/TM4C123GH6PM_GPT.h"
 #include "Inc/TM4C123GH6PM_GPIO.h"
 #include "../Common/Mcu_Hw.h"
@@ -223,15 +223,15 @@ GPT_TypeDef * CLK_AF_Enable (GPT_TimerType Timer, uint32 Portx , uint8 Pinx)
  * \Parameters (out): None
  * \Return value:   : None
  *******************************************************************************/
-void GPT_init(GPT_ConfigType* ConfigPtr)
+void GPT_init(void)
 {
 	GPT_TypeDef * TimerPtr;
-	uint32 Portx = Get_Port_GPT(ConfigPtr->ChannelID);
+	uint32 Portx = Get_Port_GPT(GPT_Config.ChannelID);
 	GPIO_TypeDef* PortPtr = Portx;
-	uint8 Pinx = Get_Pin_GPT(ConfigPtr->ChannelID);
+	uint8 Pinx = Get_Pin_GPT(GPT_Config.ChannelID);
 
 	//Enable the clock and set the AF Pin to timer pin
-	TimerPtr = CLK_AF_Enable (ConfigPtr->GPTTimerType,Portx ,Pinx);
+	TimerPtr = CLK_AF_Enable (GPT_Config.GPTTimerType,Portx ,Pinx);
 
 	//Ensure the timer is disabled (the TnEN bit in the GPTMCTL register is cleared) before making any changes.
 	if (TimerPtr->GPTMCTL.B.TAEN || TimerPtr->GPTMCTL.B.TBEN)
@@ -244,28 +244,16 @@ void GPT_init(GPT_ConfigType* ConfigPtr)
 		TimerPtr->GPTMCFG = 0x00000000;
 
 		//Configure the TnMR field in the GPTM Timer n Mode Register (GPTMTnMR):
-		TimerPtr->GPTMTAMR.B.TAMR = ConfigPtr->ChannelMode;
+		TimerPtr->GPTMTAMR.B.TAMR = GPT_Config.ChannelMode;
 
 		//set individual mode if needed
-		if (((ConfigPtr->GPTChannelTickMax < 0xFFFF)&& (ConfigPtr->GPTTimerType/6 == 0)) || ((ConfigPtr->GPTChannelTickMax < 0xFFFFFFFF) && (ConfigPtr->GPTTimerType/6 == 1)))
+		if (((GPT_Config.GPTChannelTickMax < 0xFFFF)&& (GPT_Config.GPTTimerType/6 == 0)) || ((GPT_Config.GPTChannelTickMax < 0xFFFFFFFF) && (GPT_Config.GPTTimerType/6 == 1)))
 			TimerPtr->GPTMCFG |= (0x4 <<0);
 
 
 
 		//If interrupts are required, set the appropriate bits in the GPTM Interrupt Mask Register (GPTMIMR).
 		TimerPtr->GPTMIMR |= (1<<0);
-}
-
-
-void GPT_DisableNotification (GPT_ChannelType Channel)
-{
-
-}
-
-
-void GPT_EnableNotification (GPT_ChannelType Channel)
-{
-
 }
 
 
@@ -287,23 +275,14 @@ void GPT_StartTimer_0 (uint32 Seconds_ms )
 
 }
 
-
-//void GPT_StopTimer ()
-//{
-//
-//}
-//
-//
-//void GPT_SetMode ()
-//{
-//
-//}
+uint8 flag=0;
 
 void WTIMER0A_Handler ()
 {
 	Dio_FlipChannel(Dio_PortF_PF1);
 
 	Timer0_32->GPTMICR.B.TATOCINT = 1;//clear interrupt
+	flag =1;
 }
 
 

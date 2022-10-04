@@ -143,17 +143,15 @@ typedef struct
 /**********************************************************************************************************************
  *  GLOBAL DATA PROTOTYPES
  *********************************************************************************************************************/
-
+extern GPT_ConfigType GPT_Config;
+extern uint8 flag;
 
 /**********************************************************************************************************************
  *  GLOBAL FUNCTION PROTOTYPES
  *********************************************************************************************************************/
-void GPT_init(GPT_ConfigType* ConfigPtr);
-void GPT_DisableNotification (GPT_ChannelType Channel);
-void GPT_EnableNotification (GPT_ChannelType Channel);
-void GPT_StartTimer (uint8 Seconds_ms);
-void GPT_StopTimer ();
-void GPT_SetMode ();
+extern void GPT_init(void);
+extern void GPT_StartTimer (uint8 Seconds_ms);
+extern void WTIMER0A_Handler ();
 
 #endif /* SRC_MCAL_INC_TM4C123GH6PM_GPT_H_ */
 

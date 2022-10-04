@@ -56,13 +56,14 @@ typedef struct
 /**********************************************************************************************************************
  *  GLOBAL DATA PROTOTYPES
  *********************************************************************************************************************/
-
+extern SysTick_ConfigType STConfig;
 
 /**********************************************************************************************************************
  *  GLOBAL FUNCTION PROTOTYPES
  *********************************************************************************************************************/
-void SysTick_init (SysTick_ConfigType * SysTickConfig);
-void StartSysTick (uint32 Seconds_ms);
-void StopSysTick (void);
+extern void SysTick_init (void);
+extern void StartSysTick (uint32 Seconds_ms);
+extern void StopSysTick (void);
+extern void SysTick_Handler(void);
 
 #endif /* SRC_MCAL_INC_TM4C123GH6PM_SYSTICK_H_ */

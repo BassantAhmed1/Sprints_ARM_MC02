@@ -20,8 +20,8 @@
 /**********************************************************************************************************************
  *  INCLUDES
  *********************************************************************************************************************/
-#include "Std_Types.h"
-#include "Mcu_Hw.h"
+#include "../Common/Std_Types.h"
+#include "../Common/Mcu_Hw.h"
 #include "Inc/IntCtrl.h"
 #include "Inc/IntCtrl_Types.h"
 
@@ -194,16 +194,16 @@ void Set_NVIC_Enable (IntCtrl_InterruptType IRPeripheralGates)
  * \Parameters (out): None
  * \Return value:   : None
  *******************************************************************************/
-void IntCtrl_Init (IntCtrl_ConfigType * IntCtrlConfig)
+void IntCtrl_Init (void)
 {
 	uint8 BitPositionGroup;
 	uint8 BitPositionSubGroup;
-	uint32 *PRIx = Get_PRIx(IntCtrlConfig->InterruptPeripheralGates);
-	if((IntCtrlConfig->InterruptPeripheralGates % 4) == 0)
+	uint32 *PRIx = Get_PRIx(IntCtrlConfig.InterruptPeripheralGates);
+	if((IntCtrlConfig.InterruptPeripheralGates % 4) == 0)
 		BitPositionSubGroup = 5;
-	else if((IntCtrlConfig->InterruptPeripheralGates % 4) == 1)
+	else if((IntCtrlConfig.InterruptPeripheralGates % 4) == 1)
 		BitPositionSubGroup = 13;
-	else if((IntCtrlConfig->InterruptPeripheralGates % 4) == 2)
+	else if((IntCtrlConfig.InterruptPeripheralGates % 4) == 2)
 		BitPositionSubGroup = 21;
 	else
 		BitPositionSubGroup = 29;
@@ -212,28 +212,28 @@ void IntCtrl_Init (IntCtrl_ConfigType * IntCtrlConfig)
 	//APINT->B.VECTKEY = 0x05FA;
 	*((uint32 *)(0xE000ED0C)) |= (0x05FA <<16);
 
-	if ((IntCtrlConfig->IRGroup_SubGroup /8) == 0)			//7Groups and 1Sub-Group
+	if ((IntCtrlConfig.IRGroup_SubGroup /8) == 0)			//7Groups and 1Sub-Group
 	{*((uint32 *)(0xE000ED0C)) |= (0x0<<8);
 	BitPositionGroup = BitPositionSubGroup;}
-	else if ((IntCtrlConfig->IRGroup_SubGroup /8) == 1)		//4Groups and 2Sub-Groups
+	else if ((IntCtrlConfig.IRGroup_SubGroup /8) == 1)		//4Groups and 2Sub-Groups
 	{*((uint32 *)(0xE000ED0C)) |= (0x5<<8);
 	BitPositionGroup = BitPositionSubGroup + 1;
 	}
-	else if ((IntCtrlConfig->IRGroup_SubGroup /8) == 2)		//2Groups and 4Sub-Groups
+	else if ((IntCtrlConfig.IRGroup_SubGroup /8) == 2)		//2Groups and 4Sub-Groups
 	{*((uint32 *)(0xE000ED0C)) |= (0x6<<8);
 	BitPositionGroup = BitPositionSubGroup+2;
 	}
-	else if ((IntCtrlConfig->IRGroup_SubGroup /8) == 3)		//1Group and 7Sub-Groups
+	else if ((IntCtrlConfig.IRGroup_SubGroup /8) == 3)		//1Group and 7Sub-Groups
 		*((uint32 *)(0xE000ED0C)) |= (0x7<<8);
 	//TODO : Assign Group\Subgroup Priority in NVIC_PRIx Nvic and SCB_SYSPRIx Registers
 
 
-	*PRIx |= (IntCtrlConfig->IRSubGroupPriority << BitPositionSubGroup);
-	*PRIx |= (IntCtrlConfig->IRGroupPriority << BitPositionGroup);
+	*PRIx |= (IntCtrlConfig.IRSubGroupPriority << BitPositionSubGroup);
+	*PRIx |= (IntCtrlConfig.IRGroupPriority << BitPositionGroup);
 
 
 	//TODO : Enable\Disable based on user configurations in NVIC_ENx and SCB_Sys Registers
-	Set_NVIC_Enable (IntCtrlConfig->InterruptPeripheralGates);
+	Set_NVIC_Enable (IntCtrlConfig.InterruptPeripheralGates);
 
 
 
