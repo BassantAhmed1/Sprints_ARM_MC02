@@ -50,18 +50,24 @@ int main(void)
 				if(!Dio_ReadChannel (Dio_PortA_PA3))
 					pressed= 0;
 		}
-		
+		pressed= 0;
 		//after adjusting the on and off time, pressing on PB0 starts the led periods 
 		//and after releasing PB0 it starts to take the counts again from the user
 		if (count_on && count_off)
 		{
-			while (Dio_ReadChannel (Dio_PortB_PB0))
-				LedOnPWM_Period((uint32)(count_on * 100) , (uint32)(count_off * 100));
-			count_on =0;
-			count_off =0;
+			if(Dio_ReadChannel (Dio_PortB_PB0) && (!pressed))
+			{
+				pressed = 1;
+				while (Dio_ReadChannel (Dio_PortB_PB0))
+					LedOnPWM_Period((uint32)(count_on * 100) , (uint32)(count_off * 100));
+			}
+			if(!Dio_ReadChannel (Dio_PortA_PA3) && pressed)
+			{
+				pressed= 0;
+				count_on =0;
+				count_off =0;
+			}
 		}
-		
-
 	}
 }
 
